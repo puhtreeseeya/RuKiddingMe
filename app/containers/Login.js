@@ -1,31 +1,55 @@
 import React, { Component } from 'react'; 
 import { connect } from 'react-redux'; 
 import ReactNative from 'react-native'; 
-const { ScrollView, View, TextInput, Image, Text, StyleSheet } = ReactNative; 
+const { ScrollView, View, TextInput, Image, Text, StyleSheet, AsyncStorage } = ReactNative; 
 import { fetchUserByLoginInfo } from '../reducers/index.js'; 
 import { Button } from 'react-native-elements'; 
-import store from '../store.js';
+import { NavigationActions } from 'react-navigation'; 
+import { Container, Header, Left, Body, Right, Icon, Title, Content } from 'native-base';
 
+import store from '../store.js';
 
 class Login extends Component {
 	constructor() {
 		super(); 
 		this.state = {
 			email: '', 
-			password: ''
+			password: '', 
+			error: ''
 		}
-		this.handleLogin = this.handleLogin.bind(this); 
+		this.handleLogin = this.handleLogin.bind(this);
 	}
 
 	handleLogin() {
-		console.log(this.state.email, " dfsfd", this.state.password); 
 		this.props.loginUser(this.state.email, this.state.password); 
+
 	}
 
+  componentWillReceiveProps(nextProps) {
+  	if(Object.keys(nextProps.singleUser).length) {
+  		AsyncStorage.setItem('user', JSON.stringify(nextProps.singleUser));
+  		console.log(nextProps);
+  		nextProps.navigation.dispatch(NavigationActions.navigate({ routeName: 'MainView'})) 
+  	}
+  }
+
+
+
+  // componentDidUpdate() {
+  // 	console.log("hello"); 
+  // 	if(Object.keys(this.props.singleUser).length) {
+  // 		this.props.navigator.dispatch(NavigationActions.navigate({ routeName: 'MainNavigator'})) 
+  // 	}
+  // }
+
+
+
 	render() {
-		console.log(this.state.email, " ", this.state.password); 
+		
+		
 		return (
-			<View>
+			<Container>
+			<Content>
 				<TextInput
 					style={{height:40}}
 					placeholder="Email" 
@@ -40,8 +64,9 @@ class Login extends Component {
   				title='Login' 
   				onPress={this.handleLogin}
   			/>
-
-			</View>
+  			<Text> {this.state.error} </Text> 
+		 	</Content>
+			</Container>
 		)
 	}
 }
@@ -55,7 +80,6 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		loginUser: function(email, password) {
-			console.log(email, "dfsds ", password);
 			return dispatch(fetchUserByLoginInfo(email, password)); 
 		}
 	}

@@ -4,32 +4,33 @@ import { Provider } from 'react-redux';
 import Home from './containers/Home.js'; 
 import Signup from './containers/Signup.js'; 
 import Login from './containers/Login.js'; 
+import MainView from './containers/MainView.js'; 
 import firebase from './firebase.js'; 
 import store, {fetchAllUsers} from './store';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation'; 
+import Tabs from './navigator.js'; 
 
 
 
-class App extends Component { 
+export default class App extends Component { 
 	static navigationOptions = {
     title: 'RuStudying',
   };
 
 	render() {
-		const { navigate } = this.props.navigation;
-		return (
-			<Provider store={store}>
-				<Home navigation = {navigate} />  
-			</Provider> 
+		//const { navigate } = this.props.navigation;
+		return (  
+				<Tabs />
 		)
 		
 	}
 }
-export default StackNavigator({
-	Home: { screen: App }, 
-	Signup: { screen: Signup}, 
-	Login: { screen: Login}
-})
+// export default StackNavigator({
+// 	Home: { screen: App }, 
+// 	Signup: { screen: Signup}, 
+// 	Login: { screen: Login}, 
+// 	MainView: { screen: MainView }
+// })
 // export default App; 
 
 // import NavigatorTHing from './main';

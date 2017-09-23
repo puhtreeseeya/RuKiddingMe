@@ -7,7 +7,7 @@ export function getUserById(user) {
 
 export function fetchUserById(id) {
 	return function thunk(dispatch) {
-		fetch('http://172.16.26.107:1337/api/users/'+id)
+		return fetch('http://192.168.1.247:1337/api/users/'+id)
 		.then(res => res.json())
 		.then(resJson => {
 			const action = getUserById(resJson); 
@@ -20,7 +20,7 @@ export function fetchUserById(id) {
 export function fetchUserByLoginInfo(email, password) {
 	return function thunk(dispatch) {
 		console.log(email, password); 
-		fetch('http://172.16.26.107:1337/api/users/login', {
+		return fetch('http://192.168.1.247:1337/api/users/login', {
 			method: 'POST', 
 			headers: {
 				'Accept': 'application/json',
@@ -33,6 +33,25 @@ export function fetchUserByLoginInfo(email, password) {
 		}).then(res => res.json())
 		.then(resJson => {
 			dispatch(getUserById(resJson)); 
+		})
+	}
+}
+
+export function updateUserLocation(id, lat, long) {
+	return function thunk(dispatch) {
+		console.log("inside thunky thunk"); 
+		return fetch('http://192.168.1.247:1337/api/users/'+id, {
+			method: 'PUT', 
+			headers: {
+				'Accept': 'application/json',
+    		'Content-Type': 'application/json',
+			}, 
+			body: JSON.stringify({
+				"lat": lat, 
+				"long": long
+			})
+		}).then(() => {
+			dispatch(getUserById(id)); 
 		})
 	}
 }

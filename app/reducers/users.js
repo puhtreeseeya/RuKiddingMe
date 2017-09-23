@@ -8,12 +8,12 @@ export function getAllUsers(users) {
 
 export function fetchAllUsers() {
 	return function thunk(dispatch) {
-		fetch('http://172.16.26.107:1337/api/users/')
+		return fetch('http://172.16.26.107:1337/api/users/')
 		.then(res => res.json())
 		.then(resJson => {
 			const action = getAllUsers(resJson); 
 			dispatch(action); 
-		})
+		}).catch(err => console.log(err))
 	}
 }
 
