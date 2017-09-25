@@ -1,10 +1,11 @@
 import React, { Component } from 'react'; 
 import { connect } from 'react-redux'; 
 import ReactNative from 'react-native'; 
-const { ScrollView, View, TextInput, Image, Text, StyleSheet } = ReactNative; 
-import { fetchAllUsers } from '../reducers/index.js'; 
-import { Button } from 'react-native-elements'
-import { StackNavigator } from 'react-navigation';
+const { ScrollView, View, TextInput, Text, StyleSheet } = ReactNative; 
+import { fetchAllLocations } from '../reducers/index.js'; 
+import { Button, Card, Image} from 'react-native-elements'
+import { StackNavigator, NavigationActions } from 'react-navigation';
+import { Actions } from 'react-native-router-flux'; 
 import { Container, Header, Left, Body, Right, Icon, Title } from 'native-base';
 
 
@@ -20,32 +21,34 @@ class Home extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.props.getAllLocations(); 
+	}
+
 	render() {
-		console.log(this.props); 
-		const navigate = this.props.navigation; 
+		
 		return (
-			<Container> 
-				<Container>
-				   <Header>
-	          <Body>
-	            <Title>Ru Studying</Title>
-	          </Body>
-	        </Header>
-				</Container>
-				<Container>
-				<View> 
+			<Container style={{backgroundColor:"#FFFFFF"}}> 
+				<View style={{paddingTop: 100}}> 
+					<Card 
+						title="Study With Friends"
+						image={require('../../study.jpg')}
+					>
 					<Button 
-						onPress={() => this.props.navigate('Signup')}
+						onPress={() => Actions.signup()}
 						title="Signup"
 						buttonStyle={{marginBottom: 20}}
+						backgroundColor="#FA8072"
 						raised
 					/>
 					<Button 
-						onPress={() => this.props.navigation.navigate('Login')}
+						onPress={() => Actions.login()}
 						title="Login" 
+						backgroundColor="#FA8072"
+						raised
 					/>
+					</Card> 
 				</View>
-				</Container> 
 			</Container> 
 		)
 	}
@@ -53,14 +56,14 @@ class Home extends Component {
 
 function mapStateToProps(state) {
 	return {
-		users : state.users
+		locations : state.locations
 	}
 }
 
 function mapDispatchToProps(dispatch) {
 	return {
-		getAllUsers: function() {
-			return dispatch(fetchAllUsers()); 
+		getAllLocations: function() {
+			return dispatch(fetchAllLocations()); 
 		}
 	}
 }

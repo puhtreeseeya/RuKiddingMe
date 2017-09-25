@@ -1,17 +1,17 @@
 import React, { Component } from 'react'; 
 import { connect } from 'react-redux'; 
-import ReactNative from 'react-native'; 
-const { ScrollView, View, TextInput, Image, Text, StyleSheet, AsyncStorage } = ReactNative; 
+import { ScrollView, View, TextInput, Image, Text, StyleSheet, AsyncStorage } from 'react-native'; 
 import { fetchUserByLoginInfo } from '../reducers/index.js'; 
 import { Button } from 'react-native-elements'; 
 import { NavigationActions } from 'react-navigation'; 
+import { Actions } from 'react-native-router-flux'; 
 import { Container, Header, Left, Body, Right, Icon, Title, Content } from 'native-base';
 
 import store from '../store.js';
 
 class Login extends Component {
-	constructor() {
-		super(); 
+	constructor(props) {
+		super(props); 
 		this.state = {
 			email: '', 
 			password: '', 
@@ -28,8 +28,7 @@ class Login extends Component {
   componentWillReceiveProps(nextProps) {
   	if(Object.keys(nextProps.singleUser).length) {
   		AsyncStorage.setItem('user', JSON.stringify(nextProps.singleUser));
-  		console.log(nextProps);
-  		nextProps.navigation.dispatch(NavigationActions.navigate({ routeName: 'MainView'})) 
+  		Actions.main() 
   	}
   }
 
@@ -45,28 +44,26 @@ class Login extends Component {
 
 
 	render() {
-		
-		
 		return (
-			<Container>
-			<Content>
-				<TextInput
-					style={{height:40}}
-					placeholder="Email" 
-					onChangeText={(email) => this.setState({email})}
-				/>
-				<TextInput
-					style={{height:40}}
-					placeholder="Password" 
-					onChangeText={(password) => this.setState({password})}
-				/>
-				<Button
-  				title='Login' 
-  				onPress={this.handleLogin}
-  			/>
-  			<Text> {this.state.error} </Text> 
-		 	</Content>
-			</Container>
+				<Container style={{backgroundColor:"#FFFFFF"}}>
+					<Content>
+						<TextInput
+							style={{height:40, marginLeft:15, marginRight:15}}
+							placeholder="Email" 
+							onChangeText={(email) => this.setState({email})}
+						/>
+						<TextInput
+							style={{height:40, marginLeft:15, marginRight:15}}
+							placeholder="Password" 
+							onChangeText={(password) => this.setState({password})}
+						/>
+						<Button
+		  				title='Login' 
+		  				onPress={this.handleLogin}
+		  			/>
+		  			<Text> {this.state.error} </Text> 
+				 	</Content>
+				</Container>
 		)
 	}
 }

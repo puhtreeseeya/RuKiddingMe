@@ -3,11 +3,11 @@ import { AppRegistry } from 'react-native';
 import App from './app/main.js';
 import { Provider } from 'react-redux';
 import store from './app/store.js'; 
-import {Tabs} from './app/navigator.js'; 
+import AppWithNavigation from './app/main.js'; 
 
 const ProviderNav = () => {
 	return (<Provider store={store}>
-		<Tabs />
+		<AppWithNavigation />
 	</Provider>
 	)
 }
